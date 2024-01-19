@@ -1,6 +1,12 @@
 package com.main;
 
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -26,7 +32,7 @@ public class Main {
 		try {
 			File file = new File(PATH_NAME);		
 			if(file.exists()) {
-				System.out.println("Leyendo archivo...");
+				articleList = loadFile();
 			} else {
 				System.out.println("No hay archivo disponible por el momento");
 				articleList = new ArrayList<Article>();
@@ -108,24 +114,24 @@ public class Main {
 	
 	private static Article buildScannerArticle(int id) {
 				
-		System.out.println("Creando artículo ID: " + id);
-		System.out.print("Nombre: ");
+		System.out.println("\nCreando artículo ID: " + id);
+		System.out.print("> Nombre: ");
 		String name = scanner.nextLine();
-		System.out.print("Cantidad: ");
+		System.out.print("> Cantidad: ");
 		int stock = 0;
 		do{
-			stock = ScannerHelper.getValidInt(scanner, "Introduce una cantidad: ");
+			stock = ScannerHelper.getValidInt(scanner, ">> Introduce una cantidad: ");
 			if(stock <= 0)
-				System.err.print("La cantidad no puede ser menor o igual a 0: ");
+				System.err.print(">> La cantidad no puede ser menor o igual a 0: ");
 		} while(stock <= 0);
-		System.out.print("Precio: ");
+		System.out.print("> Precio: ");
 		float price = 0;
 		do {
-			price = ScannerHelper.getValidFloat(scanner, "Introduce una cantidad: ");
+			price = ScannerHelper.getValidFloat(scanner, ">> Introduce una cantidad: ");
 			if(price < 0)
-				System.err.print("La cantidad no puede ser menor que 0: ");
+				System.err.print(">> La cantidad no puede ser menor que 0: ");
 		}while(price < 0);
-		System.out.print("Descripción: ");
+		System.out.print("> Descripción: ");
 		String description = scanner.nextLine();
 		
 		Article article = new Article(id, name, description, stock, price); 		
@@ -158,13 +164,57 @@ public class Main {
 			System.out.println("\t" + article.toString());
 		}
 		System.out.println("Fin---------------");
-		
-		
 	}
 	
 	//Load File
-	//Save File
-	private static void saveFile() {
+	private static ArrayList<Article> loadFile(){
+		System.out.println("Cargando...");
+		ArrayList<Article> list = new ArrayList<Article>();
 		
+		try (FileInputStream fileIn = new FileInputStream(PATH_NAME);
+				ObjectInputStream reader = new ObjectInputStream(fileIn);){
+			
+			boolean eof = false;			
+			
+			while(!eof) {
+				
+				try {
+					list = (ArrayList<Article>) reader.readObject();	
+					
+				} catch (EOFException e) {
+					eof = true;
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();					
+				}
+				catch (Exception e) {
+					System.err.println("Ha ocurrido un error inesperado al leer el archivo");	
+				}
+				
+			}
+			
+			return list;
+			
+		} catch (Exception e) {
+			System.err.println("Ha ocurrido un error inesperado al cargar el archivo");			
+		}		
+		return null;
+	}
+	//Save File
+	private static boolean saveFile() {
+		System.out.println("Guardando...");
+		
+		try (FileOutputStream fileOut = new FileOutputStream(PATH_NAME);
+				ObjectOutputStream writter = new ObjectOutputStream(fileOut);){					
+			
+			writter.writeObject(articleList);
+			
+			return true;
+		} catch (Exception e) {
+			System.err.println("Ha ocurrido un error inesperado al guardar el archivo");
+		}
+		
+		return false;
 	}
 }
