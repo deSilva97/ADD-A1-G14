@@ -96,10 +96,9 @@ public class Main {
 					case 4:
 						listArticles();
 						break;
-					case 5:
-						String path = "artículos.csv";
-						if(CSVExport.exportList(articleList, path)) {
-							System.out.println("Se ha exportado la lista a " + path);
+					case 5:						
+						if(CSVExport.exportList(articleList)) {
+							System.out.println("Se ha exportado la lista");
 						} else System.err.println("No se ha podido exportar la lista");
 						break;
 					default:
