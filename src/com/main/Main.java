@@ -21,9 +21,7 @@ public class Main {
 	private static ArrayList<Article> articleList;
 	
 	static int count;
-	
-	static boolean debug = true;
-	
+
 	private static void init() {
 		System.out.println("Inicializando...");
 		count = 0;
@@ -36,14 +34,6 @@ public class Main {
 			} else {
 				System.out.println("No hay archivo disponible por el momento");
 				articleList = new ArrayList<Article>();
-				if(debug) {
-					System.err.println("Está activado el modo debug");
-					articleList.add(new Article(1, "Pan", "Lol es pan", 64, 2.40f));
-					articleList.add(new Article(2, "Hierro", "", 12, 10));
-					articleList.add(new Article(5, "Diamante", "", 1, 120.78f));
-					articleList.add(new Article(generateUniqueID(), "Piedra", "Duro como la piedra", 36, 1));
-				}
-				
 			}
 		} catch (NullPointerException e) {
 			// TODO: handle exception			
@@ -70,12 +60,13 @@ public class Main {
 			System.out.println("2. Borrar artículos por id");
 			System.out.println("3. Consulta de artículo por id");
 			System.out.println("4. Listado de todos los artículos");
+			System.out.println("5. Exportar .csv");
 			System.out.println("0. Terminar programa");			
 			
 			System.out.print("Opcion: ");
-			opcion = ScannerHelper.getValidInt(scanner, "Introduce un valor entero: ");
+			opcion = ScannerHelper.getValidInt(scanner, "Introduce un valor entero: ");			
 			
-			if(articleList.size() == 0 && ((opcion == 2 || opcion == 3 || opcion == 4))) {
+			if(articleList.size() == 0 && ((opcion == 2 || opcion == 3 || opcion == 4 || opcion == 5))) {
 				System.err.println("No hay artículos actualmente");			
 			}else {
 				switch (opcion) {
