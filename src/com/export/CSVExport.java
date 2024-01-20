@@ -6,7 +6,7 @@ import com.model.Article;
 
 public class CSVExport {
 
-	public static boolean exportList(List<Article> list) {
+	public static boolean exportList(List<Article> list, String path) {
 		
 		
 		return false;

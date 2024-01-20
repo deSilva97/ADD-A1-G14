@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.export.CSVExport;
 import com.helper.ScannerHelper;
 import com.model.Article;
 
@@ -94,6 +95,12 @@ public class Main {
 						break;					
 					case 4:
 						listArticles();
+						break;
+					case 5:
+						String path = "artículos.csv";
+						if(CSVExport.exportList(articleList, path)) {
+							System.out.println("Se ha exportado la lista a " + path);
+						} else System.err.println("No se ha podido exportar la lista");
 						break;
 					default:
 						System.err.println("Opción no encontrada");
