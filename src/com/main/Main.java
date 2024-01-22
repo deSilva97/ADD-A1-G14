@@ -90,7 +90,7 @@ public class Main {
 						System.out.print("Buscar por el ID: ");
 						Article searched = searchArticle(ScannerHelper.getValidInt(scanner, "Introduce un entero: "));
 						if(searched != null)
-							articleList.remove(searched);
+							System.out.println(searched.toString());
 						else System.err.println("No se ha encontrado el artículo correspondiente");
 						break;					
 					case 4:
@@ -137,8 +137,7 @@ public class Main {
 		return article;
 	}
 	
-	private static int generateUniqueID() {		
-		System.out.println("Generando identificador...");
+	private static int generateUniqueID() {				
 		count++;
 		
 		if(searchArticle(count) == null)
